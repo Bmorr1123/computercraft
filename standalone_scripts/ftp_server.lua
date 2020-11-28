@@ -17,7 +17,7 @@ function printMessage(id, message, protocol)
 end
 
 function sendDir(path, id, protocol, indentation)
-    indentation = indentation or path.."->"..id
+    indentation = indentation or ""
     sPath = string.sub(path, string.len(parentDir) + 1)
 
     if fs.isDir(path) then
@@ -52,15 +52,15 @@ function sendDir(path, id, protocol, indentation)
 end
 
 function transmitDir(path, id, protocol)
-    print(path)
     sPath = string.sub(path, string.len(parentDir) + 1)
     if fs.exists(path) then
         print("Sent \""..sPath.."\"")
         if fs.isDir(path) then
             rednet.send(id, "dir:"..sPath, protocol)
+            print("sent dir:"..sPath)
             for _, file in pairs(fs.list(path)) do
                 if fs.isDir(path..file) then
-                    rednet.send(id, "dir:"..sPath, protcol)
+                    rednet.send(id, "dir:"..sPath..file, protocol)
                 else
                     print(file)
                     rednet.send(id, "file:"..sPath..file, protocol)
@@ -71,7 +71,7 @@ function transmitDir(path, id, protocol)
             rednet.send(id, "file:"..sPath, protocol)
         end
     else
-        rednet.send("Couldn't find \""..sPath.."\"")
+        rednet.send(id, "Couldn't find \""..sPath.."\"")
     end
 end
 rednet.open("top")
@@ -107,14 +107,21 @@ while true do
         elseif startsWith(message, "cd ") then -- cd
             dir = string.sub(message, 4)
             cd = parentDir..subDir..dir
-            print("dir =", dir)
-            if dir == ".." and subDir ~= "/files/" then -- parent
-                print(subDir)
+            if dir == ".." and subDir ~= "files/" then -- parent
+                -- Remove the last /
+                subDir = string.sub(subDir, 1, -2)
+                -- Cut to the previous dir
                 subDir = string.sub(subDir, 1, #subDir - subDir:reverse():find("/") + 1)
+                rednet.send(id, "Successfully moved to parent directory!", protocol)
             elseif fs.exists(cd) then
                 if fs.isDir(cd) then
-                    subDir = subDir..cd.."/"
+                    subDir = subDir..dir.."/"
+                    rednet.send(id, "Directory change successful!", protocol)
+                else
+                    rednet.send(id, "Directory specified is file!", protocol)
                 end
+            else
+                rednet.send(id, "Directory does not exist!", protocol)
             end
         elseif startsWith(message, "update ") then -- send
             file = parentDir..subDir..string.sub(message, 8)
@@ -139,4 +146,3 @@ while true do
     end
 end
 rednet.close("top")
-}{}
