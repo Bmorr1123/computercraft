@@ -2,6 +2,7 @@
 This file is the runner for the ftp_server.
 It needs to be run by a startup file
 It must have shell and multishell as environment variables
+TODO: Make an install script
 --]]
 local ftp_id = multishell.launch({}, "/disk/file_server/ftp_server.lua")
 multishell.setTitle(ftp_id, "ftp")
