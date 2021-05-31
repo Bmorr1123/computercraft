@@ -57,10 +57,10 @@ local scanner_radius = 8
 local scanner_width = scanner_radius * 2 + 1
 
 local scanned = scanner.scan()
+
 local function scanned_at(x, y, z)
   return scanned[scanner_width ^ 2 * (x + scanner_radius) + scanner_width * (y + scanner_radius) + (z + scanner_radius) + 1]
 end
-
 
 -- Inventory Functions
 function checkIfSlotIsItem(slot, name)
@@ -202,6 +202,7 @@ local function iDir(num) -- Increment dir
 end
 
 function tryUp()
+    scanned = scanner.scan()
     refuel()
     while not turtle.up() do
         if turtle.detectUp() then
@@ -218,6 +219,7 @@ function tryUp()
 end
 
 function tryDown()
+    scanned = scanner.scan()
     refuel()
     while not turtle.down() do
         if turtle.detectDown() then
@@ -234,6 +236,7 @@ function tryDown()
 end
 
 function tryForward(doprint)
+    scanned = scanner.scan()
     doprint = doprint or true
     refuel()
     while not turtle.forward() do
@@ -290,7 +293,7 @@ function scanUp()
     if isthere then
         return info["name"]
     end
-    return "empty"
+    return "minecraft:air"
 end
 
 function scanFront()
@@ -299,7 +302,7 @@ function scanFront()
     if isthere then
         return info["name"]
     end
-    return "empty"
+    return "minecraft:air"
 end
 
 function scanDown()
@@ -307,7 +310,7 @@ function scanDown()
     if isthere then
         return info["name"]
     else
-        return "empty"
+        return "air"
     end
 end
 
@@ -317,11 +320,14 @@ function isOre(item_name)
             return false
         end
     end
-    return item_name ~= "empty"
+    return item_name ~= "minecraft:air"
 end
 -- Mining functions
 function followVein()
-    if isOre(scanFront()) then
+    scanned = scanner.scan()
+    -- Front
+    local to_check = cardinal_directions[dir]
+    if isOre(scanned_at(to_check.x, to_check.y, to_check.z).name) then
         tryDig()
         tryForward()
         followVein()
@@ -332,7 +338,54 @@ function followVein()
             turtle.select(1)
         end
     end
-    if isOre(scanUp()) then
+    -- Left
+    to_check = cardinal_directions[iDir(-1)]
+    if isOre(scanned_at(to_check.x, to_check.y, to_check.z).name) then
+        turnLeft()
+        tryDig()
+        tryForward()
+        followVein()
+        tryBack()
+        if checkIfHaveItem("minecraft:cobblestone") then
+            turtle.select(findItem("minecraft:cobblestone"))
+            turtle.place()
+            turtle.select(1)
+        end
+        turnRight()
+    end
+    -- Right
+    to_check = cardinal_directions[iDir(1)]
+    if isOre(scanned_at(to_check.x, to_check.y, to_check.z).name) then
+        turnRight()
+        tryDig()
+        tryForward()
+        followVein()
+        tryBack()
+        if checkIfHaveItem("minecraft:cobblestone") then
+            turtle.select(findItem("minecraft:cobblestone"))
+            turtle.place()
+            turtle.select(1)
+        end
+        turnLeft()
+    end
+    -- Back
+    to_check = cardinal_directions[iDir(-2)]
+    if isOre(scanned_at(to_check.x, to_check.y, to_check.z).name) then
+        turnLeft(2)
+        tryDig()
+        tryForward()
+        followVein()
+        tryBack()
+        if checkIfHaveItem("minecraft:cobblestone") then
+            turtle.select(findItem("minecraft:cobblestone"))
+            turtle.place()
+            turtle.select(1)
+        end
+        turnRight(2)
+    end
+    -- Up
+    to_check = up
+    if isOre(scanned_at(to_check.x, to_check.y, to_check.z).name) then
         tryDigUp()
         tryUp()
         followVein()
@@ -343,8 +396,10 @@ function followVein()
             turtle.select(1)
         end
     end
-    if isOre(scanDown()) then
-        tryDigUp()
+    -- Down
+    to_check = down
+    if isOre(scanned_at(to_check.x, to_check.y, to_check.z).name) then
+        tryDigDown()
         tryDown()
         followVein()
         tryUp()
@@ -354,48 +409,12 @@ function followVein()
             turtle.select(1)
         end
     end
-    turnLeft()
-    if isOre(scanFront()) then
-        tryDig()
-        tryForward()
-        followVein()
-        tryBack()
-        if checkIfHaveItem("minecraft:cobblestone") then
-            turtle.select(findItem("minecraft:cobblestone"))
-            turtle.place()
-            turtle.select(1)
-        end
-    end
-    turnLeft()
-    if isOre(scanFront()) then
-        tryDig()
-        tryForward()
-        followVein()
-        tryBack()
-        if checkIfHaveItem("minecraft:cobblestone") then
-            turtle.select(findItem("minecraft:cobblestone"))
-            turtle.place()
-            turtle.select(1)
-        end
-    end
-    turnLeft()
-    if isOre(scanFront()) then
-        tryDig()
-        tryForward()
-        followVein()
-        tryBack()
-        if checkIfHaveItem("minecraft:cobblestone") then
-            turtle.select(findItem("minecraft:cobblestone"))
-            turtle.place()
-            turtle.select(1)
-        end
-    end
-    turnLeft()
+
 end
 
 -- Main
 print("Enter direction turtle is facing: ")
-print("(N = 0, W = 4)")
+print("(N = 0, W = 3)")
 dir = tonumber(read())
 
 term.clear()
