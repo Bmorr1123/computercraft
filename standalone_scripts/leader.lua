@@ -1,6 +1,9 @@
 function checkIfSlotIsItem(slot, name)
-    item = turtle.getItemDetail(slot)
+    local sslot = turtle.getSelectedSlot()
+    turtle.select(slot)
+    local item = turtle.getItemDetail(slot)
     if item ~= nil then
+        turtle.select(sslot)
         return item["name"] == name
     end
     return false
@@ -8,8 +11,8 @@ end
 
 function findItem(name)
     for slot = 1, 16 do
-        if checkIfSlotIsItem(i, name) then
-            return i
+        if checkIfSlotIsItem(slot, name) then
+            return slot
         end
     end
     return -1
