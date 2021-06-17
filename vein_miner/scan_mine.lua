@@ -11,7 +11,7 @@ end
 local tArgs = { ... }
 if not (#tArgs >= 1) then
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
-    print("Usage: " .. programName .. " <length> Optional: <debugMode>")
+    print("Usage: " .. programName .. " <length> <ore>")
     return
 end
 
@@ -21,10 +21,9 @@ if length < 1 then
     return
 end
 
-local debugMode = false
+local starting_direction = -1
 if #tArgs == 2 then
-    print("DebugMode Active")
-    debugMode = true
+    starting_direction = tonumber(tArgs[2])
 end
 
 -- String Functions
@@ -101,6 +100,14 @@ function countItems()
     return total
 end
 
+function checkIfInventoryFull()
+    local item = turtle.getItemDetail(16)
+    if item == nil then
+        return false
+    end
+    return true
+end
+
 function emptyInventory()
     print("Dropping:")
     for i = 1, 16 do
@@ -109,9 +116,25 @@ function emptyInventory()
         if data then
             print(tostring(turtle.getItemCount()).."x "..data["name"])
         end
-        turtle.dropDown()
+        turtle.drop()
     end
+    turtle.select(1)
 end
+
+-- Enderchest
+local has_ender_chest = checkIfHaveItem("enderstorage:ender_storage")
+function enderUnload()
+    if has_ender_chest and checkIfInventoryFull() then
+        tryDig()
+        turtle.select(findItem("enderstorage:ender_storage"))
+        turtle.place()
+        emptyInventory()
+        tryDig()
+        return true
+    end
+    return false
+end
+
 -- Mining Functions
 function tryDig()
     while turtle.detect() do
@@ -256,6 +279,7 @@ function tryForward(doprint)
 end
 
 function tryBack()
+    scanned = scanner.scan()
     refuel()
     if not turtle.back() then
         turnLeft(2)
@@ -270,6 +294,7 @@ function tryBack()
 end
 
 function turnRight(count)
+    scanned = scanner.scan()
     count = count or 1
     turtle.turnRight()
     dir = iDir(1)
@@ -279,6 +304,7 @@ function turnRight(count)
 end
 
 function turnLeft(count)
+    scanned = scanner.scan()
     count = count or 1
     turtle.turnLeft()
     dir = iDir(-1)
@@ -325,6 +351,14 @@ end
 -- Mining functions
 function followVein()
     scanned = scanner.scan()
+
+    -- Inventory Management
+    if enderUnload() then
+        tryForward()
+        followVein()
+        tryBack()
+    end
+
     -- Front
     local to_check = cardinal_directions[dir]
     if isOre(scanned_at(to_check.x, to_check.y, to_check.z).name) then
@@ -413,9 +447,13 @@ function followVein()
 end
 
 -- Main
-print("Enter direction turtle is facing: ")
-print("(N = 0, W = 3)")
-dir = tonumber(read())
+if starting_direction == -1 then
+    print("Enter direction turtle is facing: ")
+    print("(N = 0, W = 3)")
+    dir = tonumber(read())
+else
+    dir = starting_direction
+end
 
 term.clear()
 term.setCursorPos(1, 1)
