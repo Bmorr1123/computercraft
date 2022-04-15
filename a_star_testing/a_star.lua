@@ -1,7 +1,7 @@
 -- Data Management Area
 local world_data = {}
 
-function spotExists(fx, fy)
+local function spotExists(fx, fy)
     local exists = world_data[fx] ~= nil
     if exists then
         exists = world_data[fx][fy] ~= nil
@@ -16,7 +16,7 @@ function getSpot(fx, fy)
     return "?"
 end
 
-function enterSpot(fx, fy, value)
+local function enterSpot(fx, fy, value)
     local exists = world_data[fx] ~= nil
     if not exists then
         world_data[fx] = {}
@@ -28,7 +28,7 @@ function enterSpot(fx, fy, value)
 
 end
 
-function loadMap(map_path)
+local function loadMap(map_path)
     local file = fs.open(map_path, "r")
 
     local y = 1
@@ -44,9 +44,9 @@ function loadMap(map_path)
 end
 
 -- Actual Code
-function main()
+local function main()
     term.clear()
-    width, height = term.getSize()
+    local width, height = term.getSize()
 
     for y = 1, height do
         term.setCursorPos(1, y)
