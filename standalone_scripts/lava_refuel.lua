@@ -1,3 +1,7 @@
+--[[
+pastebin get Cnzxu4S5 lava_refuel.lua
+--]]
+
 if not turtle then
     printError("Requires a Turtle")
     return

@@ -1,0 +1,154 @@
+[
+    {
+        "state": {
+        },
+        "name": "mekanism:deepslate_tin_ore",
+        "tags": {
+            "minecraft:needs_stone_tool": true,
+            "byg:all/ores": true,
+            "forge:ores_in_ground/deepslate": true,
+            "forge:ore_rates/singular": true,
+            "minecraft:overworld_carver_replaceables": true,
+            "minecraft:snaps_goat_horn": true,
+            "theurgy:divination_rod_t2_allowed_blocks": true,
+            "forcecraft:mineable_with_mitts": true,
+            "theurgy:divination_rod_t1_allowed_blocks": true,
+            "mekanism:atomic_disassembler_ore": true,
+            "gobber2:paxel_mineable": true,
+            "minecraft:mineable/pickaxe": true,
+            "immersiveengineering:mineable/drill": true,
+            "pneumaticcraft:jackhammer_ores": true,
+            "forge:ores": true,
+            "theurgy:divination_rod_t3_allowed_blocks": true,
+            "silentgear:prospector_hammer_targets": true,
+            "theurgy:divination_rod_t4_allowed_blocks": true,
+            "forge:ores/tin": true,
+            "artifacts:mineable/digging_claws": true,
+            "forge:mineable/paxel": true,
+            "minecraft:mineable/mattock": true
+        }
+    },
+    {
+        "state": {
+        },
+        "name": "gobber2:gobber2_lucky_block_deepslate",
+        "tags": {
+            "forge:mineable/paxel": true,
+            "forcecraft:mineable_with_mitts": true,
+            "minecraft:needs_iron_tool": true,
+            "artifacts:mineable/digging_claws": true,
+            "immersiveengineering:mineable/drill": true,
+            "minecraft:mineable/pickaxe": true,
+            "minecraft:mineable/mattock": true,
+            "gobber2:paxel_mineable": true
+        }
+    },
+    {
+        "state": {
+        },
+        "name": "silentgear:deepslate_bort_ore",
+        "tags": {
+            "byg:all/ores": true,
+            "forge:ores/bort": true,
+            "minecraft:needs_iron_tool": true,
+            "minecraft:mineable/mattock": true,
+            "theurgy:divination_rod_t3_allowed_blocks": true,
+            "forcecraft:mineable_with_mitts": true,
+            "gobber2:paxel_mineable": true,
+            "minecraft:mineable/pickaxe": true,
+            "theurgy:divination_rod_t1_allowed_blocks": true,
+            "pneumaticcraft:jackhammer_ores": true,
+            "forge:ores": true,
+            "mekanism:atomic_disassembler_ore": true,
+            "silentgear:prospector_hammer_targets": true,
+            "theurgy:divination_rod_t4_allowed_blocks": true,
+            "theurgy:divination_rod_t2_allowed_blocks": true,
+            "artifacts:mineable/digging_claws": true,
+            "immersiveengineering:mineable/drill": true,
+            "forge:mineable/paxel": true
+        }
+    },
+    {
+        "state": {
+        },
+        "name": "create:zinc_ore",
+        "tags": {
+            "byg:all/ores": true,
+            "minecraft:needs_iron_tool": true,
+            "minecraft:mineable/mattock": true,
+            "theurgy:divination_rod_t2_allowed_blocks": true,
+            "forcecraft:mineable_with_mitts": true,
+            "mekanism:atomic_disassembler_ore": true,
+            "theurgy:divination_rod_t1_allowed_blocks": true,
+            "gobber2:paxel_mineable": true,
+            "minecraft:mineable/pickaxe": true,
+            "immersiveengineering:mineable/drill": true,
+            "pneumaticcraft:jackhammer_ores": true,
+            "forge:ores": true,
+            "theurgy:divination_rod_t4_allowed_blocks": true,
+            "silentgear:prospector_hammer_targets": true,
+            "forge:ores/zinc": true,
+            "theurgy:divination_rod_t3_allowed_blocks": true,
+            "artifacts:mineable/digging_claws": true,
+            "forge:mineable/paxel": true,
+            "forge:ores_in_ground/stone": true
+        }
+    },
+    {
+        "state": {
+        },
+        "name": "minecraft:deepslate_diamond_ore",
+        "tags": {
+            "byg:all/ores": true,
+            "forge:ores_in_ground/deepslate": true,
+            "minecraft:diamond_ores": true,
+            "forge:ore_rates/singular": true,
+            "minecraft:needs_iron_tool": true,
+            "forge:ores/diamond": true,
+            "theurgy:divination_rod_t2_allowed_blocks": true,
+            "forcecraft:mineable_with_mitts": true,
+            "theurgy:divination_rod_t1_allowed_blocks": true,
+            "immersiveengineering:mineable/drill": true,
+            "minecraft:mineable/pickaxe": true,
+            "mekanism:atomic_disassembler_ore": true,
+            "pneumaticcraft:jackhammer_ores": true,
+            "forge:mineable/paxel": true,
+            "gobber2:paxel_mineable": true,
+            "silentgear:prospector_hammer_targets": true,
+            "theurgy:divination_rod_t3_allowed_blocks": true,
+            "theurgy:divination_rod_t4_allowed_blocks": true,
+            "artifacts:mineable/digging_claws": true,
+            "forge:ores": true,
+            "minecraft:mineable/mattock": true
+        }
+    },
+    {
+        "state": {
+        },
+        "name": "mekanism:deepslate_osmium_ore",
+        "tags": {
+            "minecraft:needs_stone_tool": true,
+            "byg:all/ores": true,
+            "forge:ores_in_ground/deepslate": true,
+            "forge:ores/osmium": true,
+            "minecraft:overworld_carver_replaceables": true,
+            "minecraft:snaps_goat_horn": true,
+            "theurgy:divination_rod_t2_allowed_blocks": true,
+            "forcecraft:mineable_with_mitts": true,
+            "theurgy:divination_rod_t1_allowed_blocks": true,
+            "mekanism:atomic_disassembler_ore": true,
+            "immersiveengineering:mineable/drill": true,
+            "minecraft:mineable/pickaxe": true,
+            "forge:ore_rates/singular": true,
+            "pneumaticcraft:jackhammer_ores": true,
+            "forge:ores": true,
+            "theurgy:divination_rod_t3_allowed_blocks": true,
+            "silentgear:prospector_hammer_targets": true,
+            "theurgy:divination_rod_t4_allowed_blocks": true,
+            "gobber2:paxel_mineable": true,
+            "artifacts:mineable/digging_claws": true,
+            "forge:mineable/paxel": true,
+            "minecraft:mineable/mattock": true
+        }
+    }
+]
