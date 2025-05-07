@@ -1,7 +1,7 @@
 --[[
     pastebin get KSSyHz8g a_star.lua
 ]] -- 
-mapping = require("mapping")
+mapping = require("util/mapping")
 
 local function heuristic(a, b)
     return math.abs(a.x - b.x) + math.abs(a.y - b.y) + math.abs(a.z - b.z)
@@ -153,7 +153,7 @@ local function a_star(map, start, goal, severity, max_time)
     if mapping.World.getNode(world, goal).parent then
         local path = {mapping.World.getNode(world, goal)}
         while path[1] ~= mapping.World.getNode(world, start) do
-            print(path[1])
+            -- print(path[1])
             table.insert(path, 1, mapping.World.getNode(world, path[1].parent))
         end
         return path
@@ -302,18 +302,20 @@ local function example(start, goal)
     local end_time = os.epoch("local")
     if path == nil then
         print(string.format("Could not find path! %.2fs", (end_time - start_time) / 1000))
+        return nil
     else
         print(string.format("Found a path in %.2fs!", (end_time - start_time) / 1000))
-        for _, node in ipairs(path) do
-            print(string.format("%3d, %3d, %3d (%d)", node.x, node.y, node.z, node.d))
-        end
+        -- for _, node in ipairs(path) do
+        --     print(string.format("%3d, %3d, %3d (%d)", node.x, node.y, node.z, node.d))
+        -- end
 
         local moves = convert_to_movement(path)
-        for _, move in ipairs(moves) do
-            print(move)
-        end
+        print(unpack(moves))
+        return moves
+        -- for _, move in ipairs(moves) do
+        --     print(move, )
+        -- end
     end
-
 end
 
 return {

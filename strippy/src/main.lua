@@ -1,12 +1,11 @@
-
+local args = {...}
 ---------------------------------------------------------- Argument Checking ---
-function check_args()
-    local args = { ... }
-    if not #args >= 0 then
+function check_args(args)
+    if not (#args >= 0)then
         print("Usage:"..fs.getName(shell.getRunningProgram()).."")
-        return
+        return false
     end
-    return args
+    return true
 end
 
 -------------------------------------------------------- Peripheral Checking ---
@@ -24,9 +23,8 @@ function check_peripherals()
     }
 
     local left, right = peripheral.getType("left"), peripheral.getType("right")
-
     for job, combo in pairs(peripheral_combinations) do
-        if peripheral.isPresent(combo[1]) and peripheral.isPresent(combo[2]) then
+        if (combo[1] == left or combo[1] == right) and (combo[2] == left or combo[2] == right) then
             return job
         end
     end
@@ -38,8 +36,11 @@ function check_peripherals()
 end
 
 function main()
-    local args = check_args()
+    if not check_args(args) then
+        return
+    end
     local job = check_peripherals()
+    print("This turtle is detected to be a "..job)
     if job == nil then
         return
     end

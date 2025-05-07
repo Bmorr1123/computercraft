@@ -3,11 +3,24 @@ if not turtle then
     return false
 end
 
+local function detectIfTurtle(block_data)
+    for tag, bool in pairs(block_data.tags) do 
+        if tag == "computercraft:turtle" and bool then
+            return true
+        end
+    end
+    return false
+end
+
 
 -- Mining Functions
 local function tryDig()
     while turtle.detect() do
-        if turtle.dig() then
+        local bool, block_data = turtle.inspectDown()
+        if detectIfTurtle(block_data) then
+            print("Detected Turtle Ahead! Sleeping 3s")
+            sleep(3)
+        elseif turtle.dig() then
             sleep(0.4)
         else
             return false
@@ -18,7 +31,11 @@ end
 
 local function tryDigUp()
     while turtle.detectUp() do
-        if turtle.digUp() then
+        local bool, block_data = turtle.inspectDown()
+        if detectIfTurtle(block_data) then
+            print("Detected Turtle Above! Sleeping 3s")
+            sleep(3)
+        elseif turtle.digUp() then
             sleep(0.4)
         else
             return false
@@ -29,7 +46,11 @@ end
 
 local function tryDigDown()
     while turtle.detectDown() do
-        if turtle.digDown() then
+        local bool, block_data = turtle.inspectDown()
+        if detectIfTurtle(block_data) then
+            print("Detected Turtle Below! Sleeping 3s")
+            sleep(3)
+        elseif turtle.digDown() then
             sleep(0.4)
         else
             return false
@@ -45,6 +66,7 @@ local function turnRight(count)
     if count > 1 then
         turnRight(count - 1)
     end
+    return true
 end
 
 local function turnLeft(count)
@@ -53,6 +75,7 @@ local function turnLeft(count)
     if count > 1 then
         turnLeft(count - 1)
     end
+    return true
 end
 
 -- Movement Functions
@@ -125,6 +148,19 @@ local function tryMove(move)
     
 end
 
+local function executeMoves(moves)
+    while #moves > 0 do
+        local move = table.remove(moves, 1)
+
+        local result = movement_functions[move]()
+        if not result then
+            print("Failed to execute command \""..move.."\"!")
+            return false
+        end
+    end
+    return true
+end
+
 return {
     movement_functions=movement_functions,
     tryForward=tryForward,
@@ -137,4 +173,5 @@ return {
     tryDigUp=tryDigUp,
     tryDigDown=tryDigDown,
     tryMove=tryMove,
+    executeMoves=executeMoves,
 }
