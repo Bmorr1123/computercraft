@@ -2,9 +2,21 @@
     pastebin get 3EjbHEPN mapping.lua
 ]]
 
+local function makeDir(path)
+    local parts = {}
+    for part in string.gmatch(path, "([^/]+)") do
+        table.insert(parts, part)
+        local currentPath = table.concat(parts, "/")
+        if not fs.exists(currentPath) then
+            print("Creating directory: " .. currentPath)
+            fs.makeDir(currentPath)
+        end
+    end
+end
+
 
 local Chunk = {
-    new = function()
+    new = function(name)
         local chunk = {
             voxels = {}
         }
@@ -13,8 +25,9 @@ local Chunk = {
 }
 
 local World = {
-    new = function(chunkSize)
+    new = function(worldName, chunkSize)
         local world = {
+            name = worldName,
             chunkSize = chunkSize,
             chunks = {}
         }
@@ -111,12 +124,41 @@ local World = {
 
         local voxelKey = string.format("%d,%d,%d", voxelX, voxelY, voxelZ)
         chunk.voxels[voxelKey] = node
-    end
+    end,
+
+    serialize = function(world)
+
+        makeDir(world.name)
+        makeDir(world.name.."/chunks")
+
+        local metadata = {
+            name = world.name,
+            chunkSize = world.chunkSize
+        }
+        local file = fs.open(fs.combine(world.name, "metadata.json"), "w")
+        file.write(textutils.serializeJSON(metadata))
+        file.close()
+    end,
+
+    deserialize = function(filename)
+        if not fs.exists(filename) then
+            error("File does not exist: " .. filename)
+        end
+    
+        local file = fs.open(fs.combine(filename, "metadata.json"), "r")
+        local serializedData = file.readAll()
+        file.close()
+    
+        local data = textutils.unserializeJSON(serializedData)
+        local world = World.new(data.name, data.chunkSize)
+        return world
+    end,
+    
 }
 
 function example()
     -- Example usage
-    local world = World.new(16) -- Chunk size of 16
+    local world = World.new("world", 16) -- Chunk size of 16
 
     -- Set voxel at coordinates (5, 5, 5) to 1
     World.setVoxel(world, 5, 5, 5, 1)

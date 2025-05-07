@@ -80,7 +80,7 @@ local function a_star(map, start, goal, severity, max_time)
     severity = severity or 1
     max_time = max_time or 10
 
-    local world = mapping.World.new(map.chunkSize)
+    local world = mapping.World.new("world", map.chunkSize)
 
     local open = {}
     local function mark_open(node)
@@ -173,7 +173,9 @@ local severities = {
 }
 
 local function generate_world(min, max)
-    local map = mapping.World.new(16)
+    local map = mapping.World.new("world", 16)
+
+    print("OOOGA"..map.chunkSize)
 
     for x = min, max do
         for y = min, max do

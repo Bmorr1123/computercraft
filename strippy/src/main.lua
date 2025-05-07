@@ -44,7 +44,7 @@ function main()
     if job == nil then
         return
     end
-
+    sleep(3)
     if job == "miner" then
         shell.run("miner.lua")
     end
